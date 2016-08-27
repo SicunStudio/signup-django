@@ -30,11 +30,12 @@
         <td>{{ item.mail }}</td>
         <td>{{ item.depart1 }}</td>
         <td>{{ item.depart2 }}</td>
-        <td>{{ item.created_time|date:'Y-m-d h:i:s' }}</td>
-        <td>{{ item.last_modified_time|date:'Y-m-d h:i:s' }}</td>
+        <td>{{ item.created_time|date:'Y-m-d H:i:s' }}</td>
+        <td>{{ item.last_modified_time|date:'Y-m-d H:i:s' }}</td>
         <td>
-            <form action="">
-                <input type="hidden" value="{{ item.cid }}">
+            <form action="{% url 'control:download_word' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="cid" value="{{ item.cid }}">
                 <button type="submit">下载</button>
             </form>
         </td>
