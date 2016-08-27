@@ -1,6 +1,8 @@
 from django.shortcuts import render
-from control import views
+from join.models import People
+
 
 # Create your views here.
-def index(request):
-    return render(request, 'templates/index')
+def list_index(request):
+    people = People.objects.all()
+    return render(request, 'control/list/list.html', {'data': people})
