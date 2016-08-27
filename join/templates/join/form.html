@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>填写报名信息</title>
+</head>
+<body>
+
+<form action="{% if page_type == 'new' %}{% url 'join:handler_submit_add' %}{% elif page_type == 'edit' %}{% url 'join:handler_edit_save' %}{% endif %}" method="post">
+    {% if page_type == 'edit' %}
+        <input name="cid" type="hidden" value="{{ data.cid }}">
+        <input type="hidden" name="name" value="{{ data.name }}">
+        <input type="hidden" name="phone" value="{{ data.phone }}">
+    {% endif %}
+    <div>
+        <label for="">姓名</label>
+        {% if page_type == 'new' %}
+        <input type="text" name="name">
+            {% elif page_type == 'edit' %}
+            {{ data.name }}
+        {% endif %}
+    </div>
+    <div>
+        <label for="">性别</label>
+        <select name="sex" id="">
+            <option value="男" {% if page_type == 'new' or data.sex == '男' %}selected{% endif %}>男</option>
+            <option value="女" {% if data.sex == '女' %}selected{% endif %}>女</option>
+        </select>
+    </div>
+    <div><label for="">班级</label><input type="text" name="classname"{% if page_type == 'edit' %} value="{{ data.classname }}"{% endif %}></div>
+
+    <div>
+        <label for="">电话</label>
+        {% if page_type == 'new' %}
+        <input type="text" name="phone">
+            {% elif page_type == 'edit' %}
+            {{ data.phone }}
+        {% endif %}
+    </div>
+
+    <div><label for="">QQ</label><input type="text" name="qq"{% if page_type == 'edit' %} value="{{ data.qq }}"{% endif %}></div>
+    <div><label for="">邮箱</label>
+        {% if page_type == 'new' %}
+        <input type="text" name="mail">
+        {% elif page_type == 'edit' %}
+            {{ data.mail }}
+        {% endif %}
+    </div>
+    <div>
+        <label for="">意愿部门1</label>
+        <select name="depart1" id="">
+            <option value=" "{% if page_type == 'new' %} selected{% endif %}>(请选择)</option>
+            <option value="财务部"{% if data.depart1 == '财务部' %} selected{% endif %}>财务部</option>
+            <option value="社团外联企划部"{% if data.depart1 == '社团外联企划部' %} selected{% endif %}>社团外联企划部</option>
+            <option value="秘书部"{% if data.depart1 == '秘书部' %} selected{% endif %}>秘书部</option>
+            <option value="人力资源部"{% if data.depart1 == '人力资源部' %} selected{% endif %}>人力资源部</option>
+            <option value="社团部"{% if data.depart1 == '社团部' %} selected{% endif %}>社团部</option>
+            <option value="行政监察部"{% if data.depart1 == '行政监察部' %} selected{% endif %}>行政监察部</option>
+            <option value="外联部"{% if data.depart1 == '外联部' %} selected{% endif %}>外联部</option>
+            <option value="公共关系部"{% if data.depart1 == '公共关系部' %} selected{% endif %}>公共关系部</option>
+            <option value="思存工作室"{% if data.depart1 == '思存工作室' %} selected{% endif %}>思存工作室</option>
+            <option value="新媒体工作室"{% if data.depart1 == '新媒体工作室' %} selected{% endif %}>新媒体工作室</option>
+            <option value="宣传部"{% if data.depart1 == '宣传部' %} selected{% endif %}>宣传部</option>
+            <option value="媒体部"{% if data.depart1 == '媒体部' %} selected{% endif %}>媒体部</option>
+            <option value="文艺拓展部"{% if data.depart1 == '文艺拓展部' %} selected{% endif %}>文艺拓展部</option>
+        </select>
+    </div>
+    <div>
+        <label for="">意愿部门2</label>
+        <select name="depart2" id="">
+            <option value=" "{% if page_type == 'new' %} selected{% endif %}>(请选择)</option>
+            <option value="财务部"{% if data.depart2 == '财务部' %} selected{% endif %}>财务部</option>
+            <option value="社团外联企划部"{% if data.depart2 == '社团外联企划部' %} selected{% endif %}>社团外联企划部</option>
+            <option value="秘书部"{% if data.depart2 == '秘书部' %} selected{% endif %}>秘书部</option>
+            <option value="人力资源部"{% if data.depart2 == '人力资源部' %} selected{% endif %}>人力资源部</option>
+            <option value="社团部"{% if data.depart2 == '社团部' %} selected{% endif %}>社团部</option>
+            <option value="行政监察部"{% if data.depart2 == '行政监察部' %} selected{% endif %}>行政监察部</option>
+            <option value="外联部"{% if data.depart2 == '外联部' %} selected{% endif %}>外联部</option>
+            <option value="公共关系部"{% if data.depart2 == '公共关系部' %} selected{% endif %}>公共关系部</option>
+            <option value="思存工作室"{% if data.depart2 == '思存工作室' %} selected{% endif %}>思存工作室</option>
+            <option value="新媒体工作室"{% if data.depart2 == '新媒体工作室' %} selected{% endif %}>新媒体工作室</option>
+            <option value="宣传部"{% if data.depart2 == '宣传部' %} selected{% endif %}>宣传部</option>
+            <option value="媒体部"{% if data.depart2 == '媒体部' %} selected{% endif %}>媒体部</option>
+            <option value="文艺拓展部"{% if data.depart2 == '文艺拓展部' %} selected{% endif %}>文艺拓展部</option>
+        </select>
+    </div>
+    <div><label for="">是否服从调剂</label><input type="checkbox" name="adjustment"{% if page_type == 'new' or data.adjustment == True %}checked{% endif %}></div>
+    <div><label for="">兴趣爱好</label>
+        <textarea name="hobby" id="" cols="30" rows="10">{% if page_type == 'edit' %}{{ data.hobby }}{% endif %}</textarea></div>
+    <div><label for="">实践经历</label>
+        <textarea name="experience" id="" cols="30" rows="10">{% if page_type == 'edit' %}{{ data.experience }}{% endif %}</textarea></div>
+    <div><label for="">自我评价</label>
+        <textarea name="judge" id="" cols="30" rows="10">{% if page_type == 'edit' %}{{ data.judge }}{% endif %}</textarea></div>
+    {% csrf_token %}
+    <button type="submit">提交信息</button>
+</form>
+</body>
+</html>
