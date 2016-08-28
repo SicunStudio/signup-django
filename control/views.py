@@ -6,8 +6,10 @@ import random
 import signup.settings
 from django.utils.http import urlquote
 
-from django.http import StreamingHttpResponse, Http404, HttpResponse
+from django.http import StreamingHttpResponse, Http404, HttpResponse, HttpResponseRedirect
 
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 def genRandStr(length):
     str = ''
@@ -17,12 +19,35 @@ def genRandStr(length):
     return str
 
 
-# Create your views here.
+def login_index(request):
+    return render(request, 'control/login/login.html')
+
+
+def login_handler(request):
+    if request.method == 'POST':
+        user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect('/control/list')
+        else:
+            return HttpResponseRedirect('/control/login')
+    else:
+        return Http404
+
+
+@login_required(login_url='/control/login')
+def logout_handler(request):
+    logout(request)
+    return HttpResponseRedirect('/control/list')
+
+
+@login_required(login_url='/control/login')
 def list_index(request):
     people = People.objects.all()
     return render(request, 'control/list/list.html', {'data': people})
 
 
+@login_required(login_url='/control/login')
 def generate_docx_handler(request):
     if request.method == 'POST':
         people = People.objects.get(cid=request.POST.get('cid'))
@@ -55,8 +80,8 @@ def generate_docx_handler(request):
         response = StreamingHttpResponse(file_iterator(genfile))
         response['Content-Type'] = 'application/octet-stream'
         response['Content-Disposition'] = 'attachment;filename="'+target_file_name+'"'
-        # os.remove(genfile)
         return response
 
     else:
         return Http404
+
