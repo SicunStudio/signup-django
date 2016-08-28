@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from join.models import People
 from docxtpl import DocxTemplate
-import os
+import os, os.path
 import random
 import signup.settings
 from django.utils.http import urlquote
@@ -45,14 +45,18 @@ def generate_docx_handler(request):
                         yield c
                     else:
                         break
+            f.close()
+            if os.path.exists(file_name):
+                os.remove(file_name)
 
         target_file_name = people.name + ' - ' + people.phone + '.docx'
-
         target_file_name = urlquote(target_file_name)
+
         response = StreamingHttpResponse(file_iterator(genfile))
         response['Content-Type'] = 'application/octet-stream'
         response['Content-Disposition'] = 'attachment;filename="'+target_file_name+'"'
+        # os.remove(genfile)
         return response
-        os.remove(genfile)
+
     else:
         return Http404
