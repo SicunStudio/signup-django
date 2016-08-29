@@ -1,0 +1,25 @@
+#body {
+	max-width:480px;
+	width:100%;
+	margin:0 auto;
+}
+h1 {
+    font-family: 微软雅黑;
+	font-size: 36px;
+}
+hr {
+	border: 0;
+	height: 4px;
+	width: 80%;
+	background: #333;
+	background-image: -webkit-linear-gradient(left, #ebeae5, #333, #ebeae5);
+	background-image: -moz-linear-gradient(left, #ebeae5, #333, #ebeae5);
+	background-image: -ms-linear-gradient(left, #ebeae5, #333, #ebeae5);
+	background-image: -o-linear-gradient(left, #ebeae5, #333, #ebeae5);
+}
+    .content{
+        text-align: left;
+        font-size: 16px;
+        line-height: 24px;
+        font-family: 微软雅黑;
+    }

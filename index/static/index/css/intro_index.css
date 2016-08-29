@@ -1,0 +1,40 @@
+* {
+	font-family: 幼圆;
+}
+#body{
+	max-width:480px;
+	width:100%;
+	margin:0 auto;
+}
+h1 {
+	font-size: 36px;
+}
+table{
+	width:99%;
+}
+table tr {
+	height: 80px;
+}
+table td {
+	position: relative;
+	width: 33%;
+}
+.name {
+	text-align: center;
+	border-radius: 10px;
+	color: red;
+	font-weight: bold;
+	font-size: 12px;
+	background-color: white;
+	width: 80%;
+	height: 40px;
+	line-height: 40px;
+	position: absolute;
+	bottom: 0px;
+	left: 10%;
+}
+img {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+}
