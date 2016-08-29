@@ -1,16 +1,35 @@
 <!doctype html>
-<html lang="zh-CN">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>学生社团联合会秋季招新</title>
+    <link rel="stylesheet" href="/static/index/css/index.css">
 </head>
-<body>
-<h2>报名系统</h2>
-<a href="{% url 'index:intro_index' %}">部门介绍</a>
-<a href="{% url 'join:join_submit' %}">我要报名</a>
-<a href="{% url 'join:edit_index' %}">修改信息</a>
+<body bgcolor="#ebeae5">
+<div id="body">
+	<center>
+		<h1>学生社团联合会秋季招新</h1>
+		<h1 class="en">IF YOU WANT TO BE<br>
+			A HEARO</h1>
+		<img src="/static/index/img/hero.png">
+		<h1 class="en">JOIN US NOW</h1>
+		<div id="bottom">
+            <table style="width: 95%; text-align: center">
+                <tr>
+                    <td width="33%">
+                        <a href="{% url 'index:intro_index' %}">围观</a>
+                    </td>
+                    <td width="33%">
+                        <a href="{% url 'join:edit_index' %}">查询</a>
+                    </td>
+                    <td width="33%">
+                        <a href="{% url 'join:join_submit' %}">报名</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+	</center>
+</div>
 </body>
 </html>

@@ -21,6 +21,18 @@ def index(request):
 
 def submit_handler_add(request):
     if request.method == 'POST':
+        existphone = People.objects.filter(phone=request.POST.get('phone'))
+        existmail = People.objects.filter(mail=request.POST.get('mail'))
+        if len(existphone) > 0 or len(existmail) > 0:
+            return HttpResponse("<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'><title>提交失败</title><link rel='stylesheet' href='/static/join/css/save_success.css'></head><body bgcolor='#ebeae5'><div id='body'><h3>填写的电话或邮箱已经报过名了</h3></div></body></html>")
+
+        rname = request.POST.get('name')
+        phone = request.POST.get('phone')
+        mail = request.POST.get('mail')
+
+        if rname == '' or phone == '' or mail == '':
+            return HttpResponse("<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'><title>提交失败</title><link rel='stylesheet' href='/static/join/css/save_success.css'></head><body bgcolor='#ebeae5'><div id='body'><h3>姓名、电话或邮箱为空</h3></div></body></html>")
+
         people = People()
         people.cid = genRandStr(16)
         people.name = request.POST.get('name')
@@ -59,7 +71,7 @@ def edit_detail(request):
         if len(people) == 1:
             return render(request, 'join/form.html', {'page_type': 'edit', 'data': people[0]})
         else:
-            return HttpResponse('没有找到对应的信息')
+            return HttpResponse("<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'><title>错误</title><link rel='stylesheet' href='/static/join/css/save_success.css'></head><body bgcolor='#ebeae5'><div id='body'><h3>没有找到对应信息</h3></div></body></html>")
 
 
 def edit_handler_save(request):

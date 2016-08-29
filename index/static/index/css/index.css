@@ -1,0 +1,39 @@
+* {
+	font-family: 微软雅黑;
+	font-size: 36px;
+}
+#body{
+	max-width:480px;
+	width:100%;
+	margin:0 auto;
+}
+.en {
+	font-family: Britannic;
+}
+a {
+	text-decoration:none;
+	color:black;
+}
+#left{
+	width: 30%;
+	position: absolute;
+	left: 0%;
+}
+#center{
+	width: 30%;
+	position: absolute;
+	left: 33%;
+}
+#right{
+	width: 30%;
+	position: absolute;
+	left: 64%;
+}
+#bottom{
+	width:80%;
+	height:30px;
+	position: relative;
+}
+img{
+	width:70%;
+}

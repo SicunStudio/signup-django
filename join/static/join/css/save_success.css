@@ -1,0 +1,34 @@
+*{
+	font-family: 微软雅黑;
+}
+#body{
+	max-width:480px;
+	width:100%;
+	margin:0 auto;
+}
+h1{
+	font-size:48px;
+}
+h2{
+	font-size:36px;
+}
+#bottom{
+	position:relative;
+	width:100%;
+	height:150px;
+}
+#bottom div{
+	float:left;
+}
+div #welcome{
+	position:absolute;
+	right:0;
+	bottom:0;
+	font-size:16px;
+	background-color:white;
+	padding-left:40px;
+	padding-right:40px;
+	padding-bottom:5px;
+	padding-top:5px;
+	border-radius:5px;
+}

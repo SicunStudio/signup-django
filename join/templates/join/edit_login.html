@@ -1,19 +1,44 @@
 <!doctype html>
-<html lang="zh-CN">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>修改</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>修改信息</title>
+    <link rel="stylesheet" href="/static/join/css/save_success.css">
+    <style>
+        * {
+            font-family: 微软雅黑;
+        }
+        input {
+            background: transparent;
+	        border: 0px;
+            border-bottom: #d2d2d2 2px solid;
+            font-size: 16px;
+            line-height: 24px;
+        }
+        .input-group {
+            padding-bottom: 10px;
+        }
+    </style>
 </head>
-<body>
-<form action="{% url 'join:edit_handler' %}" method="post">
-    <div><label for="">姓名</label><input type="text" name="name"></div>
-    <div><label for="">电话</label><input type="text" name="phone"></div>
-    {% csrf_token %}
-    <div><input type="submit"></div>
-</form>
 
+<body bgcolor="#ebeae5">
+<div id="body">
+	<center>
+	 <h1>修改信息</h1>
+	 <form action="{% url 'join:edit_handler' %}" method="post">
+        <div class="input-group">
+            <label for="">姓名</label><input type="text" name="name">
+        </div>
+        <div class="input-group">
+            <label for="">电话</label><input type="text" name="phone">
+        </div>
+        {% csrf_token %}
+        <div>
+            <button type="submit">确定</button>
+        </div>
+    </form>
+	</center>
+</div>
 </body>
 </html>
