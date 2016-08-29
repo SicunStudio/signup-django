@@ -11,4 +11,7 @@ urlpatterns = [
     url(r'^/list$', views.list_index, name='list_index'),
 
     url(r'^/handler/file', views.generate_docx_handler, name='download_word'),
+
+    url(r'^/handler/open/on', views.receive_form_on, name='receive_on_handler'),
+    url(r'^/handler/open/off', views.receive_form_off, name='receive_off_handler'),
 ]

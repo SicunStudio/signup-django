@@ -9,6 +9,7 @@
 </head>
 <body>
 <div>欢迎你，<a href="{% url 'control:logout_handler' %}">退出登录</a></div>
+<div>当前报名表通道状态：{% if ifopen == 'no' %}关闭&nbsp;<a href="{% url 'control:receive_on_handler' %}">点击开启</a>{% elif ifopen == 'yes' %}开启&nbsp;<a href="{% url 'control:receive_off_handler' %}">点击关闭</a>{% endif %}</div>
 <table>
     <tr>
         <th>ID</th>

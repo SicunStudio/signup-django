@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from join.models import People
+from control.models import Config
 from docxtpl import DocxTemplate
 import os, os.path
 import random
@@ -43,8 +44,18 @@ def logout_handler(request):
 
 @login_required(login_url='/control/login')
 def list_index(request):
+    config_ifopen = Config.objects.filter(name='ifopen')
+    config_ifopen_value = 'no'
+    if len(config_ifopen) == 0:
+        ifopen = Config()
+        ifopen.name = 'ifopen'
+        ifopen.value = 'no'
+        ifopen.save()
+    else:
+        config_ifopen_value = config_ifopen[0].value
+
     people = People.objects.all()
-    return render(request, 'control/list/list.html', {'data': people})
+    return render(request, 'control/list/list.html', {'data': people, 'ifopen': config_ifopen_value})
 
 
 @login_required(login_url='/control/login')
@@ -84,4 +95,33 @@ def generate_docx_handler(request):
 
     else:
         return Http404
+
+
+@login_required(login_url='/control/login')
+def receive_form_on(request):
+    config_ifopen = Config.objects.filter(name='ifopen')
+    if len(config_ifopen) == 0:
+        ifopen = Config()
+        ifopen.name = 'ifopen'
+        ifopen.value = 'yes'
+        ifopen.save()
+    else:
+        config_ifopen[0].value = 'yes'
+        config_ifopen[0].save()
+
+    return HttpResponseRedirect('/control/list')
+
+
+@login_required(login_url='/control/login')
+def receive_form_off(request):
+    config_ifopen = Config.objects.filter(name='ifopen')
+    if len(config_ifopen) == 0:
+        ifopen = Config()
+        ifopen.name = 'ifopen'
+        ifopen.value = 'no'
+        ifopen.save()
+    else:
+        config_ifopen[0].value = 'no'
+        config_ifopen[0].save()
+    return HttpResponseRedirect('/control/list')
 

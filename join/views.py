@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from join.models import People
+from control.models import Config
 from django.http import HttpResponse, Http404
 
 import random
@@ -16,11 +17,24 @@ def genRandStr(length):
 
 # Create your views here.
 def index(request):
+    try:
+        ifopen = Config.objects.get(name='ifopen')
+        if ifopen.value == 'no':
+            return HttpResponse(
+                "<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'><title>提交失败</title><link rel='stylesheet' href='/static/join/css/save_success.css'></head><body bgcolor='#ebeae5'><div id='body'><h3>抱歉，线上报名已关闭</h3></div></body></html>")
+    finally:
+        1==1
     return render(request, 'join/form.html', {'page_type': 'new'})
 
 
 def submit_handler_add(request):
     if request.method == 'POST':
+        try:
+            ifopen = Config.objects.get(name='ifopen')
+            if ifopen.value == 'no':
+                return HttpResponse("<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'><title>提交失败</title><link rel='stylesheet' href='/static/join/css/save_success.css'></head><body bgcolor='#ebeae5'><div id='body'><h3>抱歉，线上报名已关闭</h3></div></body></html>")
+        finally:
+            1==1
         existphone = People.objects.filter(phone=request.POST.get('phone'))
         existmail = People.objects.filter(mail=request.POST.get('mail'))
         if len(existphone) > 0 or len(existmail) > 0:
@@ -76,6 +90,13 @@ def edit_detail(request):
 
 def edit_handler_save(request):
     if request.method == 'POST':
+        try:
+            ifopen = Config.objects.get(name='ifopen')
+            if ifopen.value == 'no':
+                return HttpResponse(
+                    "<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'><title>提交失败</title><link rel='stylesheet' href='/static/join/css/save_success.css'></head><body bgcolor='#ebeae5'><div id='body'><h3>抱歉，线上报名已关闭</h3></div></body></html>")
+        finally:
+            1==1
         people = People.objects.get(cid=request.POST.get('cid'))
         if people.name == request.POST.get('name') and people.phone == request.POST.get('phone'):
             people.sex = request.POST.get('sex')
