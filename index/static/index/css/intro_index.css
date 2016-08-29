@@ -1,5 +1,5 @@
 * {
-	font-family: 幼圆;
+	font-family: 微软雅黑;
 }
 #body{
 	max-width:480px;
@@ -24,11 +24,11 @@ table td {
 	border-radius: 10px;
 	color: red;
 	font-weight: bold;
-	font-size: 12px;
+	font-size: 16px;
 	background-color: white;
 	width: 80%;
-	height: 40px;
-	line-height: 40px;
+	height: 50px;
+	line-height: 50px;
 	position: absolute;
 	bottom: 0px;
 	left: 10%;
@@ -38,3 +38,15 @@ img {
 	width: 20px;
 	height: 20px;
 }
+.back-last {
+		font-family: 微软雅黑;
+		text-decoration: none;
+		background-color: #f4f3f1;
+		color: #111111;
+		border-radius: 5px;
+		font-size: 20px;
+		line-height: 32px;
+		text-align: center;
+		padding: 10px 20px;
+
+	}

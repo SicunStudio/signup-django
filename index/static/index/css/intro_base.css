@@ -23,3 +23,16 @@ hr {
         line-height: 24px;
         font-family: 微软雅黑;
     }
+
+	.back-last {
+		font-family: 微软雅黑;
+		text-decoration: none;
+		background-color: #f4f3f1;
+		color: #111111;
+		border-radius: 5px;
+		font-size: 20px;
+		line-height: 32px;
+		text-align: center;
+		padding: 10px 20px;
+
+	}
