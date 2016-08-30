@@ -86,6 +86,8 @@ def edit_detail(request):
             return render(request, 'join/form.html', {'page_type': 'edit', 'data': people[0]})
         else:
             return HttpResponse("<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'><title>错误</title><link rel='stylesheet' href='/static/join/css/save_success.css'></head><body bgcolor='#ebeae5'><div id='body'><h3>没有找到对应信息</h3></div></body></html>")
+    else:
+        return Http404
 
 
 def edit_handler_save(request):
