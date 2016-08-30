@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from join.models import People
 from control.models import Config
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, HttpResponseNotFound
 
 import random
 
@@ -71,7 +71,7 @@ def submit_handler_add(request):
         return render(request, 'join/save_success.html')
 
     else:
-        return Http404
+        return HttpResponseNotFound("<h2>Page Not Found</h2>")
 
 
 def edit_index(request):
@@ -87,7 +87,7 @@ def edit_detail(request):
         else:
             return HttpResponse("<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'><title>错误</title><link rel='stylesheet' href='/static/join/css/save_success.css'></head><body bgcolor='#ebeae5'><div id='body'><h3>没有找到对应信息</h3></div></body></html>")
     else:
-        return Http404
+        return HttpResponseNotFound("<h2>Page Not Found</h2>")
 
 
 def edit_handler_save(request):
@@ -118,9 +118,9 @@ def edit_handler_save(request):
             people.save()
 
         else:
-            return Http404
+            return HttpResponseNotFound("<h2>Page Not Found</h2>")
 
         return render(request, 'join/save_success.html')
 
     else:
-        return Http404
+        return HttpResponseNotFound("<h2>Page Not Found</h2>")
