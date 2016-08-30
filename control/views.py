@@ -7,7 +7,7 @@ import random
 import signup.settings
 from django.utils.http import urlquote
 
-from django.http import StreamingHttpResponse, Http404, HttpResponse, HttpResponseRedirect
+from django.http import StreamingHttpResponse, HttpResponseNotFound, HttpResponse, HttpResponseRedirect
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -33,7 +33,7 @@ def login_handler(request):
         else:
             return HttpResponseRedirect('/control/login')
     else:
-        return Http404
+        return HttpResponseNotFound("<h2>Page Not Found</h2>")
 
 
 @login_required(login_url='/control/login')
@@ -94,7 +94,7 @@ def generate_docx_handler(request):
         return response
 
     else:
-        return Http404
+        return HttpResponseNotFound("<h2>Page Not Found</h2>")
 
 
 @login_required(login_url='/control/login')
