@@ -1,13 +1,20 @@
 from django.shortcuts import render
 from join.models import People
 from control.models import Config
-from docxtpl import DocxTemplate
+
 import os, os.path
 import random
 import signup.settings
 from django.utils.http import urlquote
 
 from django.http import StreamingHttpResponse, HttpResponseNotFound, HttpResponse, HttpResponseRedirect
+
+from docxtpl import DocxTemplate
+from zipfile import ZipFile
+
+import datetime
+
+import shutil
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -61,7 +68,7 @@ def list_index(request):
 ### folder：生成的临时文件放在temp目录下的folder子目录
 ### 注意：folder不为空时，文件夹生成之后不会自动删除
 ### 返回值：生成的文件在服务器上的路径
-def generate_docx(cid, filename, folder = ''):
+def generate_docx(cid, filename, folder=''):
     people = People.objects.get(cid=cid)
     tploc = os.path.join(signup.settings.BASE_DIR, 'docx\\tmplte.docx')
     doc = DocxTemplate(tploc)
@@ -72,8 +79,10 @@ def generate_docx(cid, filename, folder = ''):
                'qq': people.qq, 'mail': people.mail, 'depart1': people.depart1, 'depart2': people.depart2,
                'adjustment': adjustment, 'hobby': people.hobby, 'experience': people.experience, 'judge': people.judge}
     doc.render(context)
+    folder_path = os.path.join(signup.settings.BASE_DIR, 'temp', folder)
     if folder != '':
-        os.mkdir(os.path.join(signup.settings.BASE_DIR, 'temp\\'+folder))
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
         genfile_uri = 'temp\\' + folder + '\\' + filename + '.docx'
     else:
         genfile_uri = 'temp\\' + filename + '.docx'
@@ -87,15 +96,6 @@ def generate_docx_handler(request):
     if request.method == 'POST':
         people = People.objects.get(cid=request.POST.get('cid'))
         genfile = generate_docx(request.POST.get('cid'), genRandStr(12))
-        # tploc = os.path.join(signup.settings.BASE_DIR, 'docx\\tmplte.docx')
-        # doc = DocxTemplate(tploc)
-        # adjustment = '否'
-        # if people.adjustment:
-        #     adjustment = '是'
-        # context = {'name': people.name, 'sex': people.sex, 'classname': people.classname, 'phone': people.phone, 'qq': people.qq, 'mail': people.mail, 'depart1': people.depart1, 'depart2': people.depart2, 'adjustment': adjustment, 'hobby': people.hobby, 'experience': people.experience, 'judge': people.judge}
-        # doc.render(context)
-        # genfile = os.path.join(signup.settings.BASE_DIR, 'temp\\'+genRandStr(12)+'.docx')
-        # doc.save(os.path.join(genfile))
 
         #发起文件下载
         def file_iterator(file_name, chunk_size=128):
@@ -116,6 +116,49 @@ def generate_docx_handler(request):
         response = StreamingHttpResponse(file_iterator(genfile))
         response['Content-Type'] = 'application/octet-stream'
         response['Content-Disposition'] = 'attachment;filename="'+target_file_name+'"'
+        return response
+
+    else:
+        return HttpResponseNotFound("<h2>Page Not Found</h2>")
+
+
+@login_required(login_url='/control/login')
+def generate_zip_handler(request):
+    if request.method == 'POST':
+        folder_name = genRandStr(8)
+        peoples = People.objects.all()
+        folder_path = os.path.join(signup.settings.BASE_DIR, 'temp', folder_name)
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+        zipfileloc = os.path.join(folder_path, genRandStr(10) + '.zip')
+        with ZipFile(zipfileloc, 'w') as zippack:
+            for people in peoples:
+                docx_name = people.depart1 + ' - ' + people.name + ' - ' + people.phone
+                genfile = generate_docx(people.cid, docx_name, folder_name)
+                zippack.write(genfile, docx_name + '.docx')
+            # 关闭zip写入
+            zippack.close()
+
+        # 发起下载
+        def file_iterator(file_name, chunk_size=128):
+            with open(file_name, 'rb') as f:
+                while True:
+                    c = f.read(chunk_size)
+                    if c:
+                        yield c
+                    else:
+                        break
+            f.close()
+            #删除临时文件夹
+            if os.path.exists(file_name):
+                shutil.rmtree(os.path.dirname(file_name))
+
+        target_file_name = datetime.datetime.now().strftime("%Y%m%d%H%M%S") + '.zip'
+        target_file_name = urlquote(target_file_name)
+
+        response = StreamingHttpResponse(file_iterator(zipfileloc))
+        response['Content-Type'] = 'application/octet-stream'
+        response['Content-Disposition'] = 'attachment;filename="' + target_file_name + '"'
         return response
 
     else:
