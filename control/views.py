@@ -135,7 +135,7 @@ def generate_zip_handler(request):
             for people in peoples:
                 docx_name = people.depart1 + ' - ' + people.name + ' - ' + people.phone
                 genfile = generate_docx(people.cid, docx_name, folder_name)
-                zippack.write(genfile, docx_name + '.docx')
+                zippack.write(genfile, people.depart1 + "\\" + docx_name + '.docx')
             # 关闭zip写入
             zippack.close()
 
