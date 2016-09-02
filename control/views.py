@@ -85,7 +85,7 @@ def generate_docx_handler(request):
             if os.path.exists(file_name):
                 os.remove(file_name)
 
-        target_file_name = people.name + ' - ' + people.phone + '.docx'
+        target_file_name = people.depart1 + ' - ' + people.name + ' - ' + people.phone + '.docx'
         target_file_name = urlquote(target_file_name)
 
         response = StreamingHttpResponse(file_iterator(genfile))
