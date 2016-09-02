@@ -58,19 +58,44 @@ def list_index(request):
     return render(request, 'control/list/list.html', {'data': people, 'ifopen': config_ifopen_value})
 
 
+### folder：生成的临时文件放在temp目录下的folder子目录
+### 注意：folder不为空时，文件夹生成之后不会自动删除
+### 返回值：生成的文件在服务器上的路径
+def generate_docx(cid, filename, folder = ''):
+    people = People.objects.get(cid=cid)
+    tploc = os.path.join(signup.settings.BASE_DIR, 'docx\\tmplte.docx')
+    doc = DocxTemplate(tploc)
+    adjustment = '否'
+    if people.adjustment:
+        adjustment = '是'
+    context = {'name': people.name, 'sex': people.sex, 'classname': people.classname, 'phone': people.phone,
+               'qq': people.qq, 'mail': people.mail, 'depart1': people.depart1, 'depart2': people.depart2,
+               'adjustment': adjustment, 'hobby': people.hobby, 'experience': people.experience, 'judge': people.judge}
+    doc.render(context)
+    if folder != '':
+        os.mkdir(os.path.join(signup.settings.BASE_DIR, 'temp\\'+folder))
+        genfile_uri = 'temp\\' + folder + '\\' + filename + '.docx'
+    else:
+        genfile_uri = 'temp\\' + filename + '.docx'
+    genfile = os.path.join(signup.settings.BASE_DIR, genfile_uri)
+    doc.save(os.path.join(genfile))
+    return genfile
+
+
 @login_required(login_url='/control/login')
 def generate_docx_handler(request):
     if request.method == 'POST':
         people = People.objects.get(cid=request.POST.get('cid'))
-        tploc = os.path.join(signup.settings.BASE_DIR, 'docx\\tmplte.docx')
-        doc = DocxTemplate(tploc)
-        adjustment = '否'
-        if people.adjustment:
-            adjustment = '是'
-        context = {'name': people.name, 'sex': people.sex, 'classname': people.classname, 'phone': people.phone, 'qq': people.qq, 'mail': people.mail, 'depart1': people.depart1, 'depart2': people.depart2, 'adjustment': adjustment, 'hobby': people.hobby, 'experience': people.experience, 'judge': people.judge}
-        doc.render(context)
-        genfile = os.path.join(signup.settings.BASE_DIR, 'temp\\'+genRandStr(12)+'.docx')
-        doc.save(os.path.join(genfile))
+        genfile = generate_docx(request.POST.get('cid'), genRandStr(12))
+        # tploc = os.path.join(signup.settings.BASE_DIR, 'docx\\tmplte.docx')
+        # doc = DocxTemplate(tploc)
+        # adjustment = '否'
+        # if people.adjustment:
+        #     adjustment = '是'
+        # context = {'name': people.name, 'sex': people.sex, 'classname': people.classname, 'phone': people.phone, 'qq': people.qq, 'mail': people.mail, 'depart1': people.depart1, 'depart2': people.depart2, 'adjustment': adjustment, 'hobby': people.hobby, 'experience': people.experience, 'judge': people.judge}
+        # doc.render(context)
+        # genfile = os.path.join(signup.settings.BASE_DIR, 'temp\\'+genRandStr(12)+'.docx')
+        # doc.save(os.path.join(genfile))
 
         #发起文件下载
         def file_iterator(file_name, chunk_size=128):
